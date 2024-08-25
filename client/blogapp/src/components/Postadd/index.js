@@ -57,7 +57,7 @@ const Postadd=()=>{
             postDesc:postDesc,
             postImage:postImg
         }
-        const url=`http://localhost:8000/list`
+        const url=`http://localhost:8000/list/add`
         const options={
             method:"POST",
             headers:{
@@ -143,7 +143,7 @@ const Postadd=()=>{
 
     const onDeleteRequest= async ()=>{
         console.log("deleteApi",deletePostNo)
-        const url=`http://localhost:8000/list/${deletePostNo}`
+        const url=`http://localhost:8000/list/delete/${deletePostNo}`
         const options={
             method:"DELETE"
         }

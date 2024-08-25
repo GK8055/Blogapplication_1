@@ -51,7 +51,7 @@ app.get("/list/:id",async (req,res)=>{
 })
 
 //Post API:
-app.post("/list",(req,res)=>{
+app.post("/list/add",(req,res)=>{
   console.log("postCalled")
   const sql_query=`insert into blogs (post_id,post_no,post_title,post_desc,post_image) values(?,?,?,?,?)`
   const newPost=req.body
@@ -68,7 +68,7 @@ app.post("/list",(req,res)=>{
 })
 
 //DELETE API:
-app.delete('/list/:id',(req,res)=>{
+app.delete('/list/delete/:id',(req,res)=>{
   const {id}=req.params
   // console.log("delete",id)
   const sql_query=`delete from blogs where post_no=?`
@@ -84,10 +84,11 @@ app.delete('/list/:id',(req,res)=>{
 })
 
 //PUT API:
-app.put("/list/edit",(req,res)=>{
+app.put("/list/edit/:id",(req,res)=>{
   console.log("edit")
-  const data=req.body  
-  const {postId,postNo,postTitle,postDesc,postImage}=data
+  const data=req.body
+  const {postId}=req.params  
+  const {postNo,postTitle,postDesc,postImage}=data
   const sql_query=`update blogs set post_id=?,post_title=?,post_desc=?,post_image=? where post_no=?`
   const newValues=[postId,postTitle,postDesc,postImage,postNo]
   db.run(sql_query,newValues,(err)=>{

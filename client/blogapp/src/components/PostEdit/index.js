@@ -45,7 +45,7 @@ const PostEdit=()=>{
             postDesc:postDesc,
             postImage:postImg
         }
-        const url=`http://localhost:8000/list/edit`
+        const url=`http://localhost:8000/list/edit/${postNo}`
         const options={
             method:"PUT",
             headers:{
