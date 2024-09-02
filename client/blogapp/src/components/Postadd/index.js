@@ -5,6 +5,7 @@ import Navigation from "../Navigation"
 
 import Loader from '../Loader'
 import FailureCard from '../FailureCard'
+import Header from '../Header'
 
 const apiStatus={
     loading:"LOADING",
@@ -162,16 +163,23 @@ const Postadd=()=>{
         }
      
     }
+    // console.log(typeof Number("gk"))
+    // const postNoValue=typeof postNo===num
+    // <p className='post_label_text'>{errMsg}</p>
+
+
     return (
+        <>
+        <Header/>
         <div className='post_container'>
         <Navigation/>
         <div className='post_add_container'>
             <h1 className='post_title'>Want Add Blog Post?</h1>
-            <form onSubmit={onSubmitForm} className='form_container'>
+            <form onSubmit={onSubmitForm} className='form_container_1'>
                 <div className='input_postNo_title_container'>
                     <div className='post_title_container'>
                         <label className='post_label_text' htmlFor='postno' >Post No</label>
-                        <input required className='post_no_input_ele' id="postno" type="text" placeholder="Number" value={postNo} onChange={onChangePageNo} min="1" max="20" />
+                        <input required className='post_no_input_ele' id="postno" type="number" placeholder="Number" value={postNo} onChange={onChangePageNo}  />
                     </div>
                     <div className='post_title_container'>
                         <label className='post_label_text' htmlFor='posttitle' >Post Title</label>
@@ -181,11 +189,12 @@ const Postadd=()=>{
                 <label className='post_label_text' htmlFor='postdesc'>Post Desc</label>
                 <textarea required rows="7" cols="30" id="postdesc" placeholder='PostDesc' className='post_input_ele' vlaue={postDesc} onChange={onChangePageDesc} />
                 <label className='post_label_text' htmlFor='postimage' >Post ImageUrl</label>
-                <input required className='post_input_ele' id="posttitle" type="text" placeholder="Postimageurl" value={postImg} onChange={onChangePageImg} />
+                <input required className='post_input_ele' id="posttitle" type="url" placeholder="https://example.com" value={postImg} onChange={onChangePageImg} />
                 <div className='input_postNo_title_container'>
                     <button type="submit"  className='post_add_btn'>
                         Add Post
-                    </button>    
+                    </button>
+                        
                 </div>
                  {apiPostStatus==="LOADING"?(renderLoaderView()):(renderApiPostMsg())}
             </form>
@@ -210,6 +219,7 @@ const Postadd=()=>{
                         <p className='api_status'>apiPostStatus: {apiDeleteStatus==="LOADING"?(renderDeleteApiLoaderView()):(renderApiDeleteMsg())}</p>                    
                 </div>
             </div>
+    </>
     )
 
 }

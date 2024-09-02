@@ -1,6 +1,7 @@
 import './index.css'
 import {useState,useEffect} from 'react'
 import { useParams } from 'react-router-dom'
+import Header from '../Header'
 
 const apiStatus={
     loading:"LOADING",
@@ -41,12 +42,9 @@ const ListItemDetailsView =()=>{
     }
     useEffect(()=>{
         getListDetailsData()
-    },[])
-
-
+    })
     const renderSuccessView=()=>{
-        const {postNo,postTitle,postDesc,postImage}=listDetails     
-        console.log(listDetails)
+        const {postTitle,postDesc,postImage}=listDetails     
         return (
             <div className='post_details_container'>
                 <h1 className='post_details_title'>{postTitle}</h1>
@@ -69,17 +67,18 @@ const ListItemDetailsView =()=>{
         switch(status){
             case apiStatus.success:
                 return renderSuccessView()
-                break
+               
             case apiStatus.loading:
                 return renderLoaderView()
-                break
+               
             default:
                 return renderFailureView()
-                break        
+                       
             }
         }
          return (
             <>
+            <Header/>
             {renderFinalView()}
             </>
 

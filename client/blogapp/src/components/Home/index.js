@@ -6,6 +6,7 @@ import Loader from '../Loader'
 import FailureCard from '../FailureCard'
 import ListItemView from '../ListItemView'
 import Navigation from "../Navigation"
+import Header from '../Header'
 
 // Home component
 const apiStatus={
@@ -88,14 +89,19 @@ class Home extends Component{
     }
     render(){
         return (
+            <>
+            <Header/>
             <div className='home_main_container'>
                  <Navigation/>
                 <div className='home_container'>               
                     {this.renderFinalView()}
                 </div>
-
-
             </div>
+            </>
+            
+
+
+          
         )
 
     }

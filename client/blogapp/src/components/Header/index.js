@@ -1,7 +1,18 @@
 import './index.css'
 import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie'
+import {useNavigate} from 'react-router-dom'
+
 
 const Header = () => {
+  const navigate=useNavigate()
+  // const location=useLocation()
+  // const {id}=useParams()
+
+  const onLogoutBtnClk=()=>{
+    Cookies.remove('jwt_token')
+    navigate('/login')
+  }
 
   return (
     <nav className="header_container">
@@ -9,14 +20,11 @@ const Header = () => {
       <h1 className="title">ZuAI</h1>
       </Link>
       <div className="links_container">
-        <Link to="/login" className="link_text link_style">
-          Login
-        </Link>
-        <button className="join_now_btn" type="button" >
-          Join Now
+        <button onClick={onLogoutBtnClk} className="join_now_btn" type="button" >
+          Logout
         </button>
       </div>
     </nav>
   )
 }
-export default Header
+export default (Header)

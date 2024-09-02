@@ -9,13 +9,23 @@ const bodyParser=require("body-parser")
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const speakeasy=require("speakeasy")
+const nodemailer = require('nodemailer');
+const twilio=require("twilio")
+const bcrypt=require("bcryptjs")
+const jwtToken=require('jsonwebtoken')
+
 var app = express();
 app.use(cors())
 app.use(bodyParser.json())
+
 //Database connection:
 const sqlite3=require("sqlite3").verbose()
 let db=new sqlite3.Database(path.resolve(__dirname,"blogsdata.db"))
 
+// db.run(`create Table users (username varchar(250),password int,first_name varchar(250),last_name varchar(250))`,(err)=>{
+//   console.log("table is created...")
+// })
 // db.run(`create Table blogs (post_id int,post_no int,post_title text,post_desc text,post_image blob)`,()=>{
 //   console.log("table is created...")
 // })
@@ -28,14 +38,72 @@ let db=new sqlite3.Database(path.resolve(__dirname,"blogsdata.db"))
 //   console.log("inserted...")
 // })
 
-
 //Routing:
+
+
+//Register API:
+app.post('/register',async (req,res)=>{
+  const clientdata=req.body
+  const {username,password,firstName,lastName}=clientdata
+  // Generate a salt
+  const salt=await bcrypt.genSalt(10);
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const sql_query_2=`select * from users where first_name=?` 
+  db.get(sql_query_2,firstName,(err,user)=>{
+    if (err) console.error(err.message)
+      if (!user){
+        const sql_query_1=`insert into users (username,password,first_name,last_name) values (?,?,?,?)`
+        db.run(sql_query_1,[username,hashedPassword,firstName,lastName],(err)=>{
+        if (err) return console.error(err.message)
+        else{
+          res.json({"success_message":"User is added suucessfully..."})  
+        }  
+      })
+      }
+      else{
+          res.json({"database_msg":"User is already exist in database..."})
+        }  
+    })        
+  })
+
+//Login API:
+app.post('/login',async (req,res)=>{
+    const userData=req.body
+    const { username,password}=userData
+    const sql_query=`select * from users where username=?`
+    db.get(sql_query,username,(err,dbUser)=>{
+    if (err){
+      console.error(err.message)
+      }
+      else{
+        if (!dbUser){
+          console.log('result Not found...')
+          return res.status(400).json({ error: 'User not found' });
+        }
+         // Compare the entered password with the stored hashed password
+         (typeof dbUser.password==='number'&&(dbUser.password=dbUser.password.toString()))
+        const isMatch = bcrypt.compare(password, dbUser.password);
+        if (isMatch) {
+          const payload={
+            username,
+            password
+          }
+          const jwt_token= jwtToken.sign(payload,'jwt_token')
+           res.status(200).json({ token:jwt_token });
+      } else {
+          res.status(400).json({ error: 'Invalid credentials' });
+      }
+      }
+    })
+}) 
+
 //GET API:
 app.get("/",(req,res)=>{
   const sql=`select * from blogs`
   db.all(sql,[],(err,data)=>(
+    // console.log(data)
     res.json(data)
-    
   ))
   
 })

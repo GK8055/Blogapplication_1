@@ -1,12 +1,15 @@
 import './index.css'
 import {Link} from 'react-router-dom'
 
+
 const ListItemView=(props)=>{
     const {data}=props
-    const {id,postTitle,postImage,postDesc}=data
-
+    const {id,postNo,postTitle,postImage,postDesc}=data
+    // console.log(postNo)
     return (
+    <>
     <div className='list_item_container'>
+    <p className='list_title'>{postNo}:-</p>
             <img src={postImage} alt={postTitle} className='list_image_size'/>
         <div className='list_text_container'>
             <h1 className='list_title'>{postTitle}</h1>
@@ -16,6 +19,7 @@ const ListItemView=(props)=>{
             </Link>
         </div>
     </div>
+    </>
     )
 }
 
